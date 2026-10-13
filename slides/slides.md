@@ -6,6 +6,11 @@
   display: inline-block;
   color: AliceBlue;
 }
+
+.column {
+  float: left;
+  width: 50%;
+}
 </style>
 
 # P99, et au-delà
@@ -85,7 +90,7 @@ avg: 37.4  |  median: 33.0  |  p90: 62  |  p95: 73  |  p99: 109
 
 -v-
 
-## La solution
+## L'objectif
 
 * p95 latency ≤ 20s
 * réaliste ?  <!-- .element: class="fragment" --> 
@@ -113,7 +118,7 @@ Par quoi on commence ?
 
 ## Quoi/comment mesurer ?
 
-![](./pipeline_slice_details.excalidraw.png)  <!-- .element: width="1200px" -->
+![](./pipeline_slice_details.excalidraw.png)  <!-- .element: width="1600px" -->
 
 * <!-- .element: class="fragment" --> framework, monitoring, observability (OTel)
 * <!-- .element: class="fragment" --> timestamps en DB
@@ -139,7 +144,8 @@ Par quoi on commence ?
   * <!-- .element: class="fragment" --> cache (LRU, FIFO, TTL, DB index, ...)
   * <!-- .element: class="fragment" --> trade-off RAM versus CPU
 * <!-- .element: class="fragment" --> ne pas traiter certaines requêtes :
-  * <!-- .element: class="fragment" --> HTTP 429 Too Many Requests
+  * <!-- .element: class="fragment" --> HTTP 429 Too Many Requests / Retry-After
+  * <!-- .element: class="fragment" --> Quality of Service (QoS), priority, ...
   * <!-- .element: class="fragment" --> backpropagation
 * <!-- .element: class="fragment" --> ...
 
@@ -149,11 +155,13 @@ Par quoi on commence ?
 
 * <!-- .element: class="fragment" --> Loi d'Amdahl : rendre 1000x plus rapide 5% du pipeline ne l'accélère que de 4,9999%
 * <!-- .element: class="fragment" --> queuing theory : plus les queues sont saturées, plus la latence explose
-* <!-- .element: class="fragment" --> low-hanging fruits
+* <!-- .element: class="fragment" --> low-hanging fruits / quick wins
 * <!-- .element: class="fragment" --> rendements décroissants, coûts exponentiels
 * <!-- .element: class="fragment" --> résoudre un bottleneck ne fait que révéler le prochain
 
 -v-
+
+<!-- .slide: data-visibility="hidden" -->
 
 Mise en contexte : availability
 * p50 = ~182 jours de downtime par an
@@ -164,13 +172,57 @@ Mise en contexte : availability
 
 -v-
 
+<!-- .slide: data-visibility="hidden" -->
+
 Mise en contexte : GitHub
 
 ![](./github_missing_status_page.png)
 
 ---
 
+# Conclusion
+
+---
+
+# Questions ?
+
+<div class="row">
+<div class="column">
+
+* repo : https://github.com/Lenormju/talk-p99
+  ![](./qr-code-github.png)  <!-- .element: width="700px" -->
+* slides : https://lenormju.github.io/talk-p99/index.html
+
+</div>
+<div class="column">
+
+* n'oubliez pas le ROTI après les talks :
+  * est-ce que vous avez appris quelque chose ?
+  * est-ce que vous avez été intéressé.e ?
+
+* cadeau 🕺 :
+
+![](./qr-code-rickroll-mobile.png)  <!-- .element: width="550px" -->
+
+</div>
+</div>
+
+---
+
 # Extra
+
+* fat tail latency : https://www.linkedin.com/feed/update/urn:li:activity:7511782095661428737/
+* SLI / SLO / SLA
+* Rust
+* Sojourn
+* les requêtes arrivent proportionnellement + durant les moments busy
+* P99 Conf : 21 et 22 octobre 2026
+* Loi de Little pour le lien capacité / throughput
+* Test de charge avec k6 : https://www.lenormand-julien.fr/talks.html#k6
+* avoir des workloads / benchmarks réalistes
+* load balancer
+
+![](./fat_tail_percentage.png)
 
 ---
 
