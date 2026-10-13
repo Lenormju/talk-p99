@@ -107,24 +107,51 @@ Par quoi on commence ?
 * <!-- .element: class="fragment" --> **ME**
 * <!-- .element: class="fragment" --> **SU**
 * <!-- .element: class="fragment" --> **RER !!!!**
-
-Notes:
-* idéalement, avec un framework qui le fait en auto pou vous (OTel, ou autre)
-* sinon si vous êtes pauvres, ça se bricole en stockant tout un tas de timestamps dans votre DB
+* <!-- .element: class="fragment" --> MESURER  <!-- .element: style="font-size:4em"; -->
 
 -v-
 
-TODO pipeline à plat, avec des blocs de taille proportionnels à leur durée
-chemin critique
+## Quoi/comment mesurer ?
 
-scaling vertical, horizontal, parallélisation thread/process, cpu/io-bound, cache
+![](./pipeline_slice_details.excalidraw.png)  <!-- .element: width="1200px" -->
 
+* <!-- .element: class="fragment" --> framework, monitoring, observability (OTel)
+* <!-- .element: class="fragment" --> timestamps en DB
 
-tout est vain : amdahl (même rendre 1000x plus rapide 5% du pipeline ne l'accélère que de 5%)
-queuing theory : plus les queues sont saturées, plus la latence explose
-rendements décroissants, croissance exponentielle des coûts et de la complexité, surtout pour chasser du p99,9999
-amdahl
+-v-
 
+![](./pipeline_slice_time.png)  <!-- .element: width="1600px" -->
+
+---
+
+# Solutions
+
+* <!-- .element: class="fragment" --> traiter plusieurs requêtes en même temps :
+  * <!-- .element: class="fragment" --> multithreading
+  * <!-- .element: class="fragment" --> multiprocessing
+  * <!-- .element: class="fragment" --> async
+  * <!-- .element: class="fragment" --> CPU-bound versus IO-bound
+  * <!-- .element: class="fragment" --> scaling horizontal (+ de nodes)
+* <!-- .element: class="fragment" --> traiter une requête plus vite :
+  * <!-- .element: class="fragment" --> scaling vertical (CPU freq, CPU cores, RAM, GPU, ...)
+* <!-- .element: class="fragment" --> traiter plus efficacement une requête :
+  * <!-- .element: class="fragment" --> optimisation locale/globale
+  * <!-- .element: class="fragment" --> cache (LRU, FIFO, TTL, DB index, ...)
+  * <!-- .element: class="fragment" --> trade-off RAM versus CPU
+* <!-- .element: class="fragment" --> ne pas traiter certaines requêtes :
+  * <!-- .element: class="fragment" --> HTTP 429 Too Many Requests
+  * <!-- .element: class="fragment" --> backpropagation
+* <!-- .element: class="fragment" --> ...
+
+-v-
+
+# Solutions vaines
+
+* <!-- .element: class="fragment" --> Loi d'Amdahl : rendre 1000x plus rapide 5% du pipeline ne l'accélère que de 4,9999%
+* <!-- .element: class="fragment" --> queuing theory : plus les queues sont saturées, plus la latence explose
+* <!-- .element: class="fragment" --> low-hanging fruits
+* <!-- .element: class="fragment" --> rendements décroissants, coûts exponentiels
+* <!-- .element: class="fragment" --> résoudre un bottleneck ne fait que révéler le prochain
 
 -v-
 
